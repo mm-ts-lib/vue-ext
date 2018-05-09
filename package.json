@@ -1,6 +1,6 @@
 {
   "name": "@tslib/vue-ext",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "private": false,
   "description": "config file loader for typescript",
   "main": "dist/src/vueExt.js",
