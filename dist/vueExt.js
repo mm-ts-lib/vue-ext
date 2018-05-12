@@ -5,11 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const vue_1 = __importDefault(require("vue"));
 const vuex_1 = __importDefault(require("vuex"));
-const lodash_1 = __importDefault(require("lodash"));
 const debug_1 = __importDefault(require("debug"));
-const _d = debug_1.default('vueExt');
+const _d = debug_1.default('app:vueExt');
 // 挂载vue store 扩展
 vue_1.default.use(vuex_1.default);
+_d('init vueExt...');
 // 初始化全局store
 exports.store = new vuex_1.default.Store({
     state: {
@@ -36,19 +36,16 @@ exports.store = new vuex_1.default.Store({
     }
 });
 // 初始化
-vue_1.default.extendVue = function (moduleName, options) {
+vue_1.default.extendVue = function (options) {
     // 如果option中有page选项，则注册为page，否则注册为component
     const VueExt = vue_1.default.extend(options);
-    if (lodash_1.default.isEmpty(options.name)) {
-        console.error('define vue Component error', options);
-        throw new Error('export Component MUST have name :');
-    }
-    if (options.page) {
-        console.log('----', options.page);
-        exports.store.commit(`${moduleName}/registerPage`, VueExt);
-    }
-    else {
-        exports.store.commit(`${moduleName}/registerComponent`, VueExt);
+    if (options) {
+        if (options.page) {
+            console.log('----', options.page);
+        }
+        else {
+            exports.store.commit(`${options.module}/registerComponent`, VueExt);
+        }
     }
     return VueExt;
 };
