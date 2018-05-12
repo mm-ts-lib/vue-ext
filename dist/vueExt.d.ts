@@ -1,33 +1,16 @@
-import Vue, { VueConstructor } from "vue";
+import Vue from "vue";
 import { ComponentOptions } from "vue/types/options";
-import { Store } from 'vuex';
 export interface ExtOptions {
     module: string;
+    name: string;
     index?: number;
     page?: string;
     icon?: string;
-    description: string;
+    timerInterval?: number;
     onTimer?: Function;
 }
-export declare type EXT_VUE_T = VueConstructor<ExtOptions & Vue>;
-export interface IModules {
-    [k: string]: {
-        pages: {
-            [p: string]: EXT_VUE_T;
-        };
-        components: {
-            [c: string]: EXT_VUE_T;
-        };
-    };
-}
-export declare const store: Store<{
-    router: {
-        module: string;
-        page: string;
-    };
-    login: {};
-    modules: IModules;
-}>;
+export { store } from "./globalStore";
+import "./extTimer";
 /**
  * 定义扩展方法
  */
