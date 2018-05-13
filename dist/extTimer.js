@@ -31,6 +31,7 @@ vue_1.default.use({
                         : 1000;
                     // 设置超时
                     _this.$data._timerId = setInterval(() => {
+                        _this.$data.$timerCounter++;
                         timerFunc();
                     }, interval);
                     _d("SET Vue Timer", _this.$data._timerId);
