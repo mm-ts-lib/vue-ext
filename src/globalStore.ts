@@ -43,23 +43,25 @@ export const store = new Vuex.Store({
         page: string;
       }
     ) {
-      if (_.isEmpty(state.modules[value.module])) {
+      const mod = _.camelCase(value.module);
+      const pg = _.camelCase(value.name);
+      if (_.isEmpty(state.modules[mod])) {
         //初始化创建组件信息
-        state.modules[value.module] = { pages: {}, components: {} };
+        state.modules[mod] = { pages: {}, components: {} };
       }
-      if (_.isEmpty(value.name)) {
-        _d("global store: registerVueComponents Error,name is empty:", value);
+      if (_.isEmpty(pg)) {
+        _d("global store: registerVueComponents Error,name is empty:", pg);
         return;
       }
       // 注册组件
       if (value.page) {
         // 注册为页面组件
-        _d("register page:", value.module, value.name);
-        state.modules[value.module].pages[value.name] = value.components;
+        _d("register page:", mod, pg);
+        state.modules[mod].pages[pg] = value.components;
       } else {
         // 注册为通用组件
-        _d("register components:", value.module, value.name);
-        state.modules[value.module].components[value.name] = value.components;
+        _d("register components:", mod, pg);
+        state.modules[mod].components[pg] = value.components;
       }
     }
   }

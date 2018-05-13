@@ -1,22 +1,22 @@
 import Vue from "vue";
-import { ComponentOptions } from "vue/types/options";
-export interface ExtOptions {
-    module: string;
-    name: string;
-    index?: number;
-    page?: string;
-    icon?: string;
-    timerInterval?: number;
-    onTimer?: Function;
-}
+import "vuex";
 export { store } from "./globalStore";
 import "./extTimer";
-/**
- * 定义扩展方法
- */
+export declare type FN_EXTERN = typeof Vue.extend;
+export declare function _extend(options: any): any;
 declare module "vue/types/vue" {
-    interface VueConstructor<V extends Vue> {
-        extendVue(options?: ExtOptions & ComponentOptions<V>): ExtendedVue<V, {}, {}, {}, {}>;
+    interface VueConstructor {
+        extendVue: FN_EXTERN;
+    }
+}
+declare module "vue/types/options" {
+    interface ComponentOptions<V extends Vue> {
+        module?: string;
+        index?: number;
+        page?: string;
+        icon?: string;
+        timerInterval?: number;
+        onTimer?: Function;
     }
 }
 export default Vue;

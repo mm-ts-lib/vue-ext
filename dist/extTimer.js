@@ -15,11 +15,12 @@ vue_1.default.use({
             data: function () {
                 return {
                     _timerId: -1,
-                    _timerCounter: 0 // 定时器执行计数器
+                    $timerCounter: 0 // 定时器执行计数器
                 };
             },
             created: function () {
                 const _this = this;
+                _this.$timerCounter = _this.$data.$timerCounter;
                 if (_this.$options && _this.$options.onTimer) {
                     const timerFunc = _this.$options.onTimer.bind(_this);
                     // 初始化运行一次，每秒执行一次

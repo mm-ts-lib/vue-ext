@@ -1,51 +1,53 @@
-import Vue, { VueConstructor } from "vue";
+import Vue, { VueConstructor, FunctionalComponentOptions } from "vue";
+import "vuex";
 
 import { ExtendedVue } from "vue/types/vue";
-import { ComponentOptions } from "vue/types/options";
 
 import _ from "lodash";
 import debug from "debug";
 const _d = debug("app:vueExt");
 
-export interface ExtOptions {
-  module: string;
-  name: string;
-  index?: number;
-  page?: string;
-  icon?: string;
-  timerInterval?: number;
-  onTimer?: Function;
-}
 // 初始化store
 import { store } from "./globalStore";
 export { store } from "./globalStore";
-_d("init vueExt...");
 
 // 初始化定时器
 import "./extTimer";
-// 初始化vue扩展
-Vue.extendVue = function(options?: ExtOptions & ComponentOptions<Vue>) {
-  // 如果option中有page选项，则注册为page，否则注册为component
-  const VueExt = Vue.extend(options);
-  if (options) {
+
+_d("init vueExt...");
+
+export type FN_EXTERN = typeof Vue.extend;
+export function _extend(options: any) {
+  const vue = Vue.extend.apply(Vue, arguments);
+
+  if (options && options.module && options.name) {
     store.commit(`registerVueComponents`, {
       module: options.module,
       name: options.name,
-      components: options.components,
+      components: vue,
       page: options.page
     });
   }
-  return VueExt;
-};
+  return vue;
+}
+// 初始化vue扩展
 
-/**
- * 定义扩展方法
- */
+Vue.extendVue = _extend as FN_EXTERN;
+
 declare module "vue/types/vue" {
-  interface VueConstructor<V extends Vue> {
-    extendVue(
-      options?: ExtOptions & ComponentOptions<V>
-    ): ExtendedVue<V, {}, {}, {}, {}>;
+  interface VueConstructor {
+    extendVue: FN_EXTERN;
+  }
+}
+
+declare module "vue/types/options" {
+  interface ComponentOptions<V extends Vue> {
+    module?: string;
+    index?: number;
+    page?: string;
+    icon?: string;
+    timerInterval?: number;
+    onTimer?: Function;
   }
 }
 
