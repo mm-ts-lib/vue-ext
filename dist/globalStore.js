@@ -43,12 +43,12 @@ exports.store = new vuex_1.default.Store({
             if (value.page) {
                 // 注册为页面组件
                 _d("register page:", mod, pg);
-                state.moduleRegister[mod].pages[pg] = value.components;
+                state.moduleRegister[mod].pages[pg] = value;
             }
             else {
                 // 注册为通用组件
                 _d("register components:", mod, pg);
-                state.moduleRegister[mod].components[pg] = value.components;
+                state.moduleRegister[mod].components[pg] = value;
             }
         }
     }

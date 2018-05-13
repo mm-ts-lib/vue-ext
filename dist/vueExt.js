@@ -15,16 +15,19 @@ exports.store = globalStore_2.store;
 require("./extTimer");
 _d("init vueExt...");
 function _extend(options) {
-    const vue = vue_1.default.extend.apply(vue_1.default, arguments);
+    const VueInstance = vue_1.default.extend.apply(vue_1.default, arguments);
     if (options && options.module && options.name) {
         globalStore_1.store.commit(`registerVueComponents`, {
             module: options.module,
             name: options.name,
-            components: vue,
-            page: options.page
+            Instance: VueInstance,
+            page: options.page,
+            icon: options.icon,
+            index: options.index,
+            accessGroup: options.accessGroup
         });
     }
-    return vue;
+    return VueInstance;
 }
 exports._extend = _extend;
 // 初始化vue扩展

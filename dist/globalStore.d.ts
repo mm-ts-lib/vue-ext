@@ -1,5 +1,14 @@
 import Vue from "vue";
 import { Store } from "vuex";
+export interface IComponentInfo {
+    module: string;
+    name: string;
+    page: string;
+    icon: string;
+    index: number;
+    accessGroup: [string];
+    Instance: Vue;
+}
 export interface IModuleInfo {
     name: string;
     version: string;
@@ -7,10 +16,10 @@ export interface IModuleInfo {
     icon: string;
     index: number;
     pages: {
-        [p: string]: Vue;
+        [p: string]: IComponentInfo;
     };
     components: {
-        [c: string]: Vue;
+        [c: string]: IComponentInfo;
     };
 }
 export interface IModules {

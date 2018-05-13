@@ -6,6 +6,7 @@ import { ExtendedVue } from "vue/types/vue";
 import _ from "lodash";
 import debug from "debug";
 const _d = debug("app:vueExt");
+_d("init vueExt...");
 
 // 初始化store
 import { store } from "./globalStore";
@@ -13,40 +14,27 @@ export { store } from "./globalStore";
 
 // 初始化定时器
 import "./extTimer";
-
-_d("init vueExt...");
-
+// 创建export导出函数
 export type FN_EXTERN = typeof Vue.extend;
-export function _extend(options: any) {
-  const vue = Vue.extend.apply(Vue, arguments);
+export function _export(options: any) {
+  const VueInstance = Vue.extend.apply(Vue, arguments);
 
   if (options && options.module && options.name) {
-    store.commit(`registerVueComponents`, {
-      module: options.module,
-      name: options.name,
-      components: vue,
-      page: options.page
-    });
+    store.commit(`registerVueComponents`, VueInstance);
   }
-  return vue;
+  return VueInstance;
 }
 // 初始化vue扩展
-
-Vue.extendVue = _extend as FN_EXTERN;
+Vue.export = _export as FN_EXTERN;
 
 declare module "vue/types/vue" {
   interface VueConstructor {
-    extendVue: FN_EXTERN;
+    export: FN_EXTERN;
   }
 }
 
 declare module "vue/types/options" {
   interface ComponentOptions<V extends Vue> {
-    module?: string;
-    index?: number;
-    page?: string;
-    icon?: string;
-    accessGroup?: [string]; // 权限组
     timerInterval?: number;
     onTimer?: Function;
   }

@@ -9,17 +9,27 @@ const _d = debug("app:globalStore");
 // 挂载vue store 扩展
 Vue.use(Vuex);
 
+export interface IComponentInfo {
+  name: string;
+  title: string;
+  icon: string;
+  index: number; // 排序
+  accessGroup: [string];
+}
 export interface IModuleInfo {
   name: string;
   version: string;
   title: string;
   icon: string;
   index: number; // 排序
+  accessGroup: [string];
   pages: {
-    [p: string]: Vue;
+    // 导出页面信息列表
+    [p: string]: IComponentInfo;
   };
   components: {
-    [c: string]: Vue;
+    // 导出组件列表，组件实例
+    [c: string]: VueConstructor;
   };
 }
 
@@ -30,51 +40,40 @@ export interface IModules {
 // 初始化全局store
 export const store = new Vuex.Store({
   state: {
-    entry: "pc", // 类型入口，默认为pc
-    moduleRegister: {} as IModules // 已加载的组件列表
+    moduleList: {} as IModules // 已加载的组件列表
   },
 
   mutations: {
-    setEntry(state, value) {
-      state.entry = value;
-    },
     registerModule(state, modInfo: IModuleInfo) {
-      // 转换大小写
-      modInfo.name = _.camelCase(modInfo.name);
-      modInfo.pages = modInfo.pages || {};
-      modInfo.components = modInfo.components || {};
-      state.moduleRegister[modInfo.name] = modInfo;
+      state.moduleList[modInfo.name] = modInfo;
     },
     registerVueComponents(
       state,
       value: {
         module: string;
-        name: string;
-        components: Vue;
-        page: string;
+        vueClass: VueConstructor & { options: { name: string } };
       }
     ) {
-      const mod = _.camelCase(value.module);
-      const pg = _.camelCase(value.name);
-      if (_.isEmpty(state.moduleRegister[mod])) {
+      // 获取实例名称
+      const mod = state.moduleList[value.module];
+      if (_.isEmpty(mod)) {
         //初始化创建组件信息
-        _d("Invalid or Unregister Module:", mod);
+        _d("Invalid Module for registerVueComponents:", value);
         return;
       }
-      if (_.isEmpty(pg)) {
-        _d("registerVueComponents Error,name is empty:", pg);
+      const pageName = value.vueClass.options.name;
+      if (_.isEmpty(pageName)) {
+        _d("registerVueComponents ,No Define Page Name:", value);
+        return;
+      }
+      const page = mod.pages[pageName];
+      if (_.isEmpty(page)) {
+        _d("registerVueComponents ,not defined Page:", pageName);
         return;
       }
       // 注册组件
-      if (value.page) {
-        // 注册为页面组件
-        _d("register page:", mod, pg);
-        state.moduleRegister[mod].pages[pg] = value.components;
-      } else {
-        // 注册为通用组件
-        _d("register components:", mod, pg);
-        state.moduleRegister[mod].components[pg] = value.components;
-      }
+      mod.components[pageName] = value.vueClass;
+      _d("register Vue components successed:", value.module, pageName);
     }
   }
 });
