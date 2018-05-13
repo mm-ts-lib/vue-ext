@@ -46,6 +46,7 @@ declare module "vue/types/options" {
     index?: number;
     page?: string;
     icon?: string;
+    accessGroup?: [string]; // 权限组
     timerInterval?: number;
     onTimer?: Function;
   }

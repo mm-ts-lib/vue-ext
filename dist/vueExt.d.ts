@@ -15,6 +15,7 @@ declare module "vue/types/options" {
         index?: number;
         page?: string;
         icon?: string;
+        accessGroup?: [string];
         timerInterval?: number;
         onTimer?: Function;
     }

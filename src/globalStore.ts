@@ -14,7 +14,7 @@ export interface IModuleInfo {
   version: string;
   title: string;
   icon: string;
-  index: number;
+  index: number; // 排序
   pages: {
     [p: string]: Vue;
   };
