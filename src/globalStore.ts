@@ -47,7 +47,7 @@ export const store = new Vuex.Store({
     registerModule(state, modInfo: IModuleInfo) {
       const m: any = {};
       m[modInfo.name] = modInfo;
-      state.moduleList = Object.assign(m, modInfo);
+      state.moduleList = Object.assign(m, state.moduleList);
     },
     registerVueComponents(
       state,
