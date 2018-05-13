@@ -11,13 +11,17 @@ Vue.use({
       data: function() {
         return {
           _timerId: -1, // 定时器id
-          $timerCounter: 0 // 定时器执行计数器
+          _timerCounter: 0 // 定时器执行计数器
         };
+      },
+      computed: {
+        $timerCounter() {
+          const _this: any = this;
+          return _this.$data._timerCounter;
+        }
       },
       created: function() {
         const _this: any = this;
-        _this.$timerCounter = _this.$data.$timerCounter;
-
         if (_this.$options && _this.$options.onTimer) {
           const timerFunc: Function = _this.$options.onTimer.bind(_this);
           // 初始化运行一次，每秒执行一次
@@ -28,7 +32,7 @@ Vue.use({
             : 1000;
           // 设置超时
           _this.$data._timerId = setInterval(() => {
-            _this.$data.$timerCounter++;
+            _this.$data._timerCounter++;
             timerFunc();
           }, interval);
           _d("SET Vue Timer", _this.$data._timerId);
