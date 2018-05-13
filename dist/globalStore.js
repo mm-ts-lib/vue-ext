@@ -7,51 +7,46 @@ const vue_1 = __importDefault(require("vue"));
 const vuex_1 = __importDefault(require("vuex"));
 const lodash_1 = __importDefault(require("lodash"));
 const debug_1 = __importDefault(require("debug"));
-const _d = debug_1.default("app:globalStore");
+const _d = debug_1.default('app:globalStore');
 // 挂载vue store 扩展
 vue_1.default.use(vuex_1.default);
 // 初始化全局store
 exports.store = new vuex_1.default.Store({
     state: {
-        entry: "pc",
-        moduleRegister: {} // 已加载的组件列表
+        moduleList: {},
     },
     mutations: {
-        setEntry(state, value) {
-            state.entry = value;
-        },
         registerModule(state, modInfo) {
-            // 转换大小写
-            modInfo.name = lodash_1.default.camelCase(modInfo.name);
-            modInfo.pages = modInfo.pages || {};
-            modInfo.components = modInfo.components || {};
-            state.moduleRegister[modInfo.name] = modInfo;
+            const m = {};
+            m[modInfo.name] = modInfo;
+            state.moduleList = Object.assign(m, modInfo);
         },
         registerVueComponents(state, value) {
-            const mod = lodash_1.default.camelCase(value.module);
-            const pg = lodash_1.default.camelCase(value.name);
-            if (lodash_1.default.isEmpty(state.moduleRegister[mod])) {
+            // 获取实例名称
+            const mod = state.moduleList[value.module];
+            if (lodash_1.default.isEmpty(mod)) {
                 //初始化创建组件信息
-                _d("Invalid or Unregister Module:", mod);
+                _d('Invalid Module for registerVueComponents:', value);
                 return;
             }
-            if (lodash_1.default.isEmpty(pg)) {
-                _d("registerVueComponents Error,name is empty:", pg);
+            const pageName = value.vueClass.options.name;
+            if (lodash_1.default.isEmpty(pageName)) {
+                _d('registerVueComponents ,No Define Page Name:', value);
+                return;
+            }
+            const page = mod.pages[pageName];
+            if (lodash_1.default.isEmpty(page)) {
+                _d('registerVueComponents ,not defined Page:', pageName);
                 return;
             }
             // 注册组件
-            if (value.page) {
-                // 注册为页面组件
-                _d("register page:", mod, pg);
-                state.moduleRegister[mod].pages[pg] = value;
-            }
-            else {
-                // 注册为通用组件
-                _d("register components:", mod, pg);
-                state.moduleRegister[mod].components[pg] = value;
-            }
-        }
-    }
+            mod.components = mod.components || {};
+            mod.components[pageName] = value.vueClass;
+            _d('register Vue components successed:', value.module, pageName);
+            // 强制进行变更
+            state.moduleList = Object.assign({}, state.moduleList);
+        },
+    },
 });
 // 设置全局对象
 const w = window;

@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const vue_1 = __importDefault(require("vue"));
 const debug_1 = __importDefault(require("debug"));
-const _d = debug_1.default("app:globalStore");
+const _d = debug_1.default('app:globalStore');
 // 创建自动销毁的定时器组件
 vue_1.default.use({
     install(Vue) {
@@ -15,14 +15,14 @@ vue_1.default.use({
             data: function () {
                 return {
                     _timerId: -1,
-                    _timerCounter: 0 // 定时器执行计数器
+                    _timerCounter: 0,
                 };
             },
             computed: {
                 $timerCounter() {
                     const _this = this;
                     return _this.$data._timerCounter;
-                }
+                },
             },
             created: function () {
                 const _this = this;
@@ -39,17 +39,17 @@ vue_1.default.use({
                         _this.$data._timerCounter++;
                         timerFunc();
                     }, interval);
-                    _d("SET Vue Timer", _this.$data._timerId);
+                    _d('SET Vue Timer', _this.$data._timerId);
                 }
             },
             destroyed: function () {
                 const _this = this;
                 if (_this.$data._timerId >= 0) {
                     clearInterval(_this.$data._timerId);
-                    _d("Clear Vue Timer:", _this.$data._timerId);
+                    _d('Clear Vue Timer:', _this.$data._timerId);
                 }
-            }
+            },
         });
-    }
+    },
 });
 //# sourceMappingURL=extTimer.js.map

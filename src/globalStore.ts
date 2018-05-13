@@ -1,15 +1,15 @@
-import Vue, { VueConstructor } from "vue";
+import Vue, { VueConstructor } from 'vue';
 
-import Vuex, { Store, Module } from "vuex";
+import Vuex, { Store, Module } from 'vuex';
 
-import _ from "lodash";
-import debug from "debug";
-const _d = debug("app:globalStore");
+import _ from 'lodash';
+import debug from 'debug';
+const _d = debug('app:globalStore');
 
 // 挂载vue store 扩展
 Vue.use(Vuex);
 
-export interface IComponentInfo {
+export interface IPageInfo {
   name: string;
   title: string;
   icon: string;
@@ -25,7 +25,7 @@ export interface IModuleInfo {
   accessGroup: [string];
   pages: {
     // 导出页面信息列表
-    [p: string]: IComponentInfo;
+    [p: string]: IPageInfo;
   };
   components: {
     // 导出组件列表，组件实例
@@ -40,42 +40,47 @@ export interface IModules {
 // 初始化全局store
 export const store = new Vuex.Store({
   state: {
-    moduleList: {} as IModules // 已加载的组件列表
+    moduleList: {} as IModules, // 已加载的组件列表
   },
 
   mutations: {
     registerModule(state, modInfo: IModuleInfo) {
-      state.moduleList[modInfo.name] = modInfo;
+      const m: any = {};
+      m[modInfo.name] = modInfo;
+      state.moduleList = Object.assign(m, modInfo);
     },
     registerVueComponents(
       state,
       value: {
         module: string;
         vueClass: VueConstructor & { options: { name: string } };
-      }
+      },
     ) {
       // 获取实例名称
       const mod = state.moduleList[value.module];
       if (_.isEmpty(mod)) {
         //初始化创建组件信息
-        _d("Invalid Module for registerVueComponents:", value);
+        _d('Invalid Module for registerVueComponents:', value);
         return;
       }
       const pageName = value.vueClass.options.name;
       if (_.isEmpty(pageName)) {
-        _d("registerVueComponents ,No Define Page Name:", value);
+        _d('registerVueComponents ,No Define Page Name:', value);
         return;
       }
       const page = mod.pages[pageName];
       if (_.isEmpty(page)) {
-        _d("registerVueComponents ,not defined Page:", pageName);
+        _d('registerVueComponents ,not defined Page:', pageName);
         return;
       }
       // 注册组件
+      mod.components = mod.components || {};
       mod.components[pageName] = value.vueClass;
-      _d("register Vue components successed:", value.module, pageName);
-    }
-  }
+      _d('register Vue components successed:', value.module, pageName);
+      // 强制进行变更
+      state.moduleList = Object.assign({}, state.moduleList);
+    },
+  },
 });
 
 // 设置全局对象

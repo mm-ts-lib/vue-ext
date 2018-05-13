@@ -1,13 +1,11 @@
-import Vue from "vue";
-import { Store } from "vuex";
-export interface IComponentInfo {
-    module: string;
+import { VueConstructor } from 'vue';
+import { Store } from 'vuex';
+export interface IPageInfo {
     name: string;
-    page: string;
+    title: string;
     icon: string;
     index: number;
     accessGroup: [string];
-    Instance: Vue;
 }
 export interface IModuleInfo {
     name: string;
@@ -15,17 +13,17 @@ export interface IModuleInfo {
     title: string;
     icon: string;
     index: number;
+    accessGroup: [string];
     pages: {
-        [p: string]: IComponentInfo;
+        [p: string]: IPageInfo;
     };
     components: {
-        [c: string]: IComponentInfo;
+        [c: string]: VueConstructor;
     };
 }
 export interface IModules {
     [k: string]: IModuleInfo;
 }
 export declare const store: Store<{
-    entry: string;
-    moduleRegister: IModules;
+    moduleList: IModules;
 }>;
