@@ -19,7 +19,7 @@ exports.store = new vuex_1.default.Store({
         registerModule(state, modInfo) {
             const m = {};
             m[modInfo.name] = modInfo;
-            state.moduleList = Object.assign(m, state.moduleList);
+            state.moduleList = Object.assign({}, state.moduleList, m);
         },
         registerVueComponents(state, value) {
             // 获取实例名称
