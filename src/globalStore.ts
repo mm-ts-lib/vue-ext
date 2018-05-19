@@ -40,10 +40,19 @@ export interface IModules {
 // 初始化全局store
 export const store = new Vuex.Store({
   state: {
+    user: {}, // 当前登录用户信息
     moduleList: {} as IModules, // 已加载的组件列表
   },
 
   mutations: {
+    /**
+     * 更新当前用户信息
+     * @param state
+     * @param value
+     */
+    updateUser(state, value) {
+      state.user = value;
+    },
     registerModule(state, modInfo: IModuleInfo) {
       const m: any = {};
       m[modInfo.name] = modInfo;
@@ -63,20 +72,21 @@ export const store = new Vuex.Store({
         _d('Invalid Module for registerVueComponents:', value);
         return;
       }
-      const pageName = value.vueClass.options.name;
-      if (_.isEmpty(pageName)) {
+      const modName = value.vueClass.options.name;
+      if (_.isEmpty(modName)) {
         _d('registerVueComponents ,No Define Page Name:', value);
         return;
       }
-      const page = mod.pages[pageName];
+      const page = mod.pages[modName];
       if (_.isEmpty(page)) {
-        _d('registerVueComponents ,not defined Page:', pageName);
-        return;
+        _d('registerVueComponents ,as components', modName);
+      } else {
+        _d('registerVueComponents ,as page', modName);
       }
       // 注册组件
       mod.components = mod.components || {};
-      mod.components[pageName] = value.vueClass;
-      _d('register Vue components successed:', value.module, pageName);
+      mod.components[modName] = value.vueClass;
+      _d('register Vue components successed:', value.module, modName);
       // 强制进行变更
       state.moduleList = Object.assign({}, state.moduleList);
     },

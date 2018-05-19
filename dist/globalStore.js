@@ -29,20 +29,22 @@ exports.store = new vuex_1.default.Store({
                 _d('Invalid Module for registerVueComponents:', value);
                 return;
             }
-            const pageName = value.vueClass.options.name;
-            if (lodash_1.default.isEmpty(pageName)) {
+            const modName = value.vueClass.options.name;
+            if (lodash_1.default.isEmpty(modName)) {
                 _d('registerVueComponents ,No Define Page Name:', value);
                 return;
             }
-            const page = mod.pages[pageName];
+            const page = mod.pages[modName];
             if (lodash_1.default.isEmpty(page)) {
-                _d('registerVueComponents ,not defined Page:', pageName);
-                return;
+                _d('registerVueComponents ,as components', modName);
+            }
+            else {
+                _d('registerVueComponents ,as page', modName);
             }
             // 注册组件
             mod.components = mod.components || {};
-            mod.components[pageName] = value.vueClass;
-            _d('register Vue components successed:', value.module, pageName);
+            mod.components[modName] = value.vueClass;
+            _d('register Vue components successed:', value.module, modName);
             // 强制进行变更
             state.moduleList = Object.assign({}, state.moduleList);
         },

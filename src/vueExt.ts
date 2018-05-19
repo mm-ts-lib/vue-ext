@@ -10,6 +10,7 @@ import { store } from './globalStore';
 import './extTimer';
 // 导出全局store
 export { store } from './globalStore';
+
 // 导出Vue对象
 export const Vue = V;
 
