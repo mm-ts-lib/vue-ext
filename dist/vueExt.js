@@ -14,6 +14,10 @@ require("./extTimer");
 // 导出全局store
 var globalStore_2 = require("./globalStore");
 exports.store = globalStore_2.store;
+var serverAddress_1 = require("./serverAddress");
+exports.serverAddress = serverAddress_1.serverAddress;
+var apiLoader_1 = require("./apiLoader");
+exports.apiLoader = apiLoader_1.apiLoader;
 // 导出Vue对象
 exports.Vue = vue_1.default;
 // 返回Vue创建工厂函数
