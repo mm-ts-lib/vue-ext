@@ -14,7 +14,7 @@ export interface IPageInfo {
   title: string;
   icon: string;
   index: number; // 排序
-  accessGroup: [string];
+  permissions: [string];
 }
 export interface IModuleInfo {
   name: string;
@@ -22,7 +22,7 @@ export interface IModuleInfo {
   title: string;
   icon: string;
   index: number; // 排序
-  accessGroup: [string];
+  permissions: [string];
   pages: {
     // 导出页面信息列表
     [p: string]: IPageInfo;
@@ -37,10 +37,17 @@ export interface IModules {
   [k: string]: IModuleInfo;
 }
 
+export interface IUser {
+  id: string; // 用户 id
+  name: string; // 用户名称
+  avatar: string; // base64 编码的用户头像
+  permissions: [string]; // 用户拥有的权限
+}
+
 // 初始化全局store
 export const store = new Vuex.Store({
   state: {
-    user: {}, // 当前登录用户信息
+    user: {} as IUser, // 当前登录用户信息
     moduleList: {} as IModules, // 已加载的组件列表
   },
 

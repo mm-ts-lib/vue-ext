@@ -1,0 +1,15 @@
+{
+  "editor.formatOnSave": true,
+  "jshint.enable": false,
+  "eslint.packageManager": "yarn",
+  "npm.packageManager": "yarn",
+  "editor.tabSize": 4,
+  "vetur.format.defaultFormatter.html": "js-beautify-html",
+  "vetur.format.defaultFormatterOptions": {
+    "js-beautify-html": {
+      "indent_size": 2,
+      "wrap_attributes": "force-aligned"
+    }
+  },
+  "prettier.printWidth": 120
+}

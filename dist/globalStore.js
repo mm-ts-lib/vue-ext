@@ -13,9 +13,18 @@ vue_1.default.use(vuex_1.default);
 // 初始化全局store
 exports.store = new vuex_1.default.Store({
     state: {
+        user: {},
         moduleList: {},
     },
     mutations: {
+        /**
+         * 更新当前用户信息
+         * @param state
+         * @param value
+         */
+        updateUser(state, value) {
+            state.user = value;
+        },
         registerModule(state, modInfo) {
             const m = {};
             m[modInfo.name] = modInfo;

@@ -5,7 +5,7 @@ export interface IPageInfo {
     title: string;
     icon: string;
     index: number;
-    accessGroup: [string];
+    permissions: [string];
 }
 export interface IModuleInfo {
     name: string;
@@ -13,7 +13,7 @@ export interface IModuleInfo {
     title: string;
     icon: string;
     index: number;
-    accessGroup: [string];
+    permissions: [string];
     pages: {
         [p: string]: IPageInfo;
     };
@@ -24,6 +24,13 @@ export interface IModuleInfo {
 export interface IModules {
     [k: string]: IModuleInfo;
 }
+export interface IUser {
+    id: string;
+    name: string;
+    avatar: string;
+    permissions: [string];
+}
 export declare const store: Store<{
+    user: IUser;
     moduleList: IModules;
 }>;
