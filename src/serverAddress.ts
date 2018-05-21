@@ -16,19 +16,19 @@ function getServer() {
   if (localServer) {
     _server = localServer;
     _d('using local server:', _server);
-    return;
+    return _server;
   }
   // 检测是否为本机地址或者IP，直接访问本机作为服务器
   if (location.hostname.match(/^\d+?\.\d+?\.\d+?\.\d+?$/)) {
     _server = `${location.protocol}//${location.host}`;
     _d('using ip server:', _server);
-    return;
+    return _server;
   }
   // 检测是否为本机地址或者IP，直接访问本机作为服务器
   if (location.hostname.match(/^localhost$/)) {
     _server = `${location.protocol}//${location.host}`;
     _d('using localhost server:', _server);
-    return;
+    return _server;
   }
   // 否则返回api.域名
   _server = `${location.protocol}//api.${location.host}`;

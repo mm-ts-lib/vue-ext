@@ -1,1 +1,1 @@
-export declare const serverAddress: string | undefined;
+export declare const serverAddress: string;
