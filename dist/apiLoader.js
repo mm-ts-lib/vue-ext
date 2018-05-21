@@ -31,7 +31,8 @@ function apiLoader(moduleName, api) {
             if (response.ok) {
                 return await response.json();
             }
-            throw new Error(`HTTP API Fail: ${url},${response.status} , ${response.statusText}`);
+            const text = await response.text();
+            throw new Error(`HTTP API Fail: ${response.status} , ${text}`);
         };
     }
 }
