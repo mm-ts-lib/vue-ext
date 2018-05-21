@@ -17,7 +17,7 @@ export function apiLoader(moduleName: string, api: any) {
       const response = await fetch(url, {
         body: JSON.stringify(data), // must match 'Content-Type' header
         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: 'same-origin', // include, same-origin, *omit
+        credentials: 'include', // include, same-origin, *omit
         headers: {
           'content-type': 'application/json',
         },
