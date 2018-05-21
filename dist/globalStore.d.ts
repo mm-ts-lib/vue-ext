@@ -25,6 +25,6 @@ export interface IModules {
     [k: string]: IModuleInfo;
 }
 export declare const store: Store<{
-    user: {};
+    user: any;
     moduleList: IModules;
 }>;

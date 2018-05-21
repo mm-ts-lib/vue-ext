@@ -40,7 +40,7 @@ export interface IModules {
 // 初始化全局store
 export const store = new Vuex.Store({
   state: {
-    user: {}, // 当前登录用户信息
+    user: {} as any, // 当前登录用户信息
     moduleList: {} as IModules, // 已加载的组件列表
   },
 
