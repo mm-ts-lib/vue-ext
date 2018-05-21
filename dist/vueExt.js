@@ -14,6 +14,8 @@ require("./extTimer");
 // 导出全局store
 var globalStore_2 = require("./globalStore");
 exports.store = globalStore_2.store;
+var DebugSessionStorage_1 = require("./DebugSessionStorage");
+exports.debugSessionStorage = DebugSessionStorage_1.default;
 var serverAddress_1 = require("./serverAddress");
 exports.serverAddress = serverAddress_1.serverAddress;
 var apiLoader_1 = require("./apiLoader");

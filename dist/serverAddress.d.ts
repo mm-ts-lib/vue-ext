@@ -1,1 +1,1 @@
-export declare const serverAddress: string;
+export declare function serverAddress(moduleName?: string): string;

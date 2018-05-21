@@ -6,33 +6,38 @@
 // 注意：协议总是和当前访问协议一致，如当前为http，则后台也为http，如当前为https，则后台也为https
 import _ from 'lodash';
 import debug from 'debug';
+import debugSessionStorage from './DebugSessionStorage';
 const _d = debug('@serverAddress');
 
-function getServer() {
-  let _server = '';
+export function serverAddress(moduleName?: string) {
+  // 检测是否在调试组件里
+  if (moduleName) {
+    const port = debugSessionStorage.getDebugModulePort(moduleName);
+    if (port) {
+      return `http://localhost:${port}`;
+    }
+  }
 
   // 首先检测是否定义localstrage
   const localServer = localStorage.getItem('server');
   if (localServer) {
-    _server = localServer;
-    _d('using local server:', _server);
-    return _server;
+    _d('using local server:', localServer);
+    return localServer;
   }
   // 检测是否为本机地址或者IP，直接访问本机作为服务器
   if (location.hostname.match(/^\d+?\.\d+?\.\d+?\.\d+?$/)) {
-    _server = `${location.protocol}//${location.host}`;
-    _d('using ip server:', _server);
-    return _server;
+    const ipServer = `${location.protocol}//${location.host}`;
+    _d('using ip server:', ipServer);
+    return ipServer;
   }
   // 检测是否为本机地址或者IP，直接访问本机作为服务器
   if (location.hostname.match(/^localhost$/)) {
-    _server = `${location.protocol}//${location.host}`;
-    _d('using localhost server:', _server);
-    return _server;
+    const localhost = `${location.protocol}//${location.host}`;
+    _d('using localhost server:', localhost);
+    return localhost;
   }
   // 否则返回api.域名
-  _server = `${location.protocol}//api.${location.host}`;
-  _d('using api server: ', _server);
-  return _server;
+  const apiServer = `${location.protocol}//api.${location.host}`;
+  _d('using api server: ', apiServer);
+  return apiServer;
 }
-export const serverAddress = getServer();

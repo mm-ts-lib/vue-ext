@@ -15,7 +15,7 @@ function apiLoader(moduleName, api) {
         const __api = api;
         // 设置 api post 函数
         __api[name] = async (data) => {
-            const url = `${serverAddress_1.serverAddress}/api/${lodash_1.default.kebabCase(moduleName)}/${lodash_1.default.kebabCase(name)}`;
+            const url = `${serverAddress_1.serverAddress(moduleName)}/api/${lodash_1.default.kebabCase(moduleName)}/${lodash_1.default.kebabCase(name)}`;
             const response = await fetch(url, {
                 body: JSON.stringify(data),
                 cache: 'no-cache',

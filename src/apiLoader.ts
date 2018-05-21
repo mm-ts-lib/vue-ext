@@ -13,7 +13,7 @@ export function apiLoader(moduleName: string, api: any) {
     const __api: any = api;
     // 设置 api post 函数
     __api[name] = async (data: any) => {
-      const url = `${serverAddress}/api/${_.kebabCase(moduleName)}/${_.kebabCase(name)}`;
+      const url = `${serverAddress(moduleName)}/api/${_.kebabCase(moduleName)}/${_.kebabCase(name)}`;
       const response = await fetch(url, {
         body: JSON.stringify(data), // must match 'Content-Type' header
         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
