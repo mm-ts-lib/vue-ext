@@ -37,17 +37,10 @@ export interface IModules {
   [k: string]: IModuleInfo;
 }
 
-export interface IUser {
-  id: string; // 用户 id
-  name: string; // 用户名称
-  avatar: string; // base64 编码的用户头像
-  permissions: [string]; // 用户拥有的权限
-}
-
 // 初始化全局store
 export const store = new Vuex.Store({
   state: {
-    user: {} as IUser, // 当前登录用户信息
+    user: {}, // 当前登录用户信息
     moduleList: {} as IModules, // 已加载的组件列表
   },
 

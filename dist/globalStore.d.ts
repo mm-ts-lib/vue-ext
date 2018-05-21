@@ -24,13 +24,7 @@ export interface IModuleInfo {
 export interface IModules {
     [k: string]: IModuleInfo;
 }
-export interface IUser {
-    id: string;
-    name: string;
-    avatar: string;
-    permissions: [string];
-}
 export declare const store: Store<{
-    user: IUser;
+    user: {};
     moduleList: IModules;
 }>;
