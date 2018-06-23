@@ -4,34 +4,46 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const debug_1 = __importDefault(require("debug"));
+const lodash_1 = __importDefault(require("lodash"));
 const _d = debug_1.default('@developDebugger');
 class DebugSessionStorage {
-    constructor(key) {
-        this._key = key;
+    constructor() {
+        this._storKey = 'debugModules';
+        this.debugModuleList = [];
+        this.portMap = {};
+        this.nameMap = {};
+        this._read();
+        this._makeMap();
+    }
+    _makeMap() {
+        this.portMap = lodash_1.default.keyBy(this.debugModuleList, 'port');
+        this.nameMap = lodash_1.default.keyBy(this.debugModuleList, 'modName');
     }
     _read() {
         try {
-            const str = sessionStorage.getItem(this._key);
+            const str = sessionStorage.getItem(this._storKey);
             if (!str) {
-                return {};
+                return [];
             }
-            return JSON.parse(str);
+            this.debugModuleList = JSON.parse(str);
         }
         catch (e) {
+            this.debugModuleList = [];
             _d('sessionStorage.debugModules Invalid,reset to {}');
-            return {};
         }
     }
-    setDebugModulePort(moduleName, localPort) {
-        const debugModules = this._read();
-        debugModules[moduleName] = localPort;
-        sessionStorage.setItem(this._key, JSON.stringify(debugModules));
+    // setDebugModulePort(moduleName: string, localPort: number) {
+    //   const debugModules = this._read();
+    //   debugModules[moduleName] = { port: localPort, html: false, server: false };
+    //   sessionStorage.setItem(this._storKey, JSON.stringify(debugModules));
+    // }
+    findDebugModuleByName(moduleName) {
+        return this.nameMap[moduleName];
     }
-    getDebugModulePort(moduleName) {
-        const debugModules = this._read();
-        return debugModules[moduleName];
+    findDebugModuleByPort(port) {
+        return this.portMap[port];
     }
 }
 exports.DebugSessionStorage = DebugSessionStorage;
-exports.default = new DebugSessionStorage('debugModules');
+exports.default = new DebugSessionStorage();
 //# sourceMappingURL=DebugSessionStorage.js.map

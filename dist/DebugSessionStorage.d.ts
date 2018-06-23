@@ -1,12 +1,23 @@
-export interface ISessionStoreDebugModule {
-    [key: string]: number;
-}
+export declare type DebugModule_T = {
+    name: string;
+    port: number;
+    html: boolean;
+    server: boolean;
+};
 export declare class DebugSessionStorage {
-    private _key;
-    constructor(key: string);
+    private _storKey;
+    debugModuleList: DebugModule_T[];
+    portMap: {
+        [k: number]: DebugModule_T;
+    };
+    nameMap: {
+        [k: string]: DebugModule_T;
+    };
+    constructor();
+    private _makeMap();
     private _read();
-    setDebugModulePort(moduleName: string, localPort: number): void;
-    getDebugModulePort(moduleName: string): number;
+    findDebugModuleByName(moduleName: string): DebugModule_T;
+    findDebugModuleByPort(port: number): DebugModule_T;
 }
 declare const _default: DebugSessionStorage;
 export default _default;

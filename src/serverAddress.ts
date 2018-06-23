@@ -9,35 +9,29 @@ import debug from 'debug';
 import debugSessionStorage from './DebugSessionStorage';
 const _d = debug('@serverAddress');
 
+function getDebugPort() {
+  const m = location.pathname.match(/^\/(\d+)\//);
+  if (m && m.length === 2) {
+    return m[1];
+  }
+  return null;
+}
+
 export function serverAddress(moduleName?: string) {
-  // 检测是否在调试组件里
-  if (moduleName) {
-    const port = debugSessionStorage.getDebugModulePort(moduleName);
-    if (port) {
-      return `http://localhost:${port}`;
+  // 检测是否为调试组件
+  // 检测是否为主页调试模式，即以一个域名是否使用debug
+  if (location.hostname.match(/^debug\./)) {
+    if (moduleName) {
+      const debugModule = debugSessionStorage.findDebugModuleByName(moduleName);
+      if (debugModule && debugModule.server) {
+        // 调试模式，所有api请求发送到调试端口映射路径
+        return `${location.protocol}//${location.hostname}:${location.port}/${debugModule.port}`;
+      }
     }
+    // 调试模式，无端口，所有api请求发送到调试域名服务器
+    return `${location.protocol}//${location.hostname}:${location.port}`;
   }
 
-  // 首先检测是否定义localstrage
-  const localServer = localStorage.getItem('server');
-  if (localServer) {
-    _d('using local server:', localServer);
-    return localServer;
-  }
-  // 检测是否为本机地址或者IP，直接访问本机作为服务器
-  if (location.hostname.match(/^\d+?\.\d+?\.\d+?\.\d+?$/)) {
-    const ipServer = `${location.protocol}//${location.host}`;
-    _d('using ip server:', ipServer);
-    return ipServer;
-  }
-  // 检测是否为本机地址或者IP，直接访问本机作为服务器
-  if (location.hostname.match(/^localhost$/)) {
-    const localhost = `${location.protocol}//${location.host}`;
-    _d('using localhost server:', localhost);
-    return localhost;
-  }
   // 否则返回api.域名
-  const apiServer = `${location.protocol}//api.${location.host}`;
-  _d('using api server: ', apiServer);
-  return apiServer;
+  return `${location.protocol}//api.${location.hostname}:${location.port}`;
 }

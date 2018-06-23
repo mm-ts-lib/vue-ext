@@ -1,37 +1,56 @@
 import debug from 'debug';
+import _ from 'lodash';
 const _d = debug('@developDebugger');
 
-export interface ISessionStoreDebugModule {
-  [key: string]: number;
-}
+export type DebugModule_T = {
+  // name
+  name: string;
+  // 调试端口
+  port: number;
+  // 是否打开html调试
+  html: boolean;
+  // 是否打开服务端调试
+  server: boolean;
+};
 
 export class DebugSessionStorage {
-  private _key: string;
-  constructor(key: string) {
-    this._key = key;
-  }
-  private _read(): ISessionStoreDebugModule {
-    try {
-      const str = sessionStorage.getItem(this._key);
-      if (!str) {
-        return {};
-      }
+  private _storKey = 'debugModules';
 
-      return JSON.parse(str);
+  public debugModuleList = [] as DebugModule_T[];
+  public portMap = {} as { [k: number]: DebugModule_T };
+  public nameMap = {} as { [k: string]: DebugModule_T };
+
+  constructor() {
+    this._read();
+    this._makeMap();
+  }
+  private _makeMap() {
+    this.portMap = _.keyBy(this.debugModuleList, 'port');
+    this.nameMap = _.keyBy(this.debugModuleList, 'modName');
+  }
+  private _read() {
+    try {
+      const str = sessionStorage.getItem(this._storKey);
+      if (!str) {
+        return [];
+      }
+      this.debugModuleList = JSON.parse(str);
     } catch (e) {
+      this.debugModuleList = [];
       _d('sessionStorage.debugModules Invalid,reset to {}');
-      return {};
     }
   }
-  setDebugModulePort(moduleName: string, localPort: number) {
-    const debugModules = this._read();
-    debugModules[moduleName] = localPort;
-    sessionStorage.setItem(this._key, JSON.stringify(debugModules));
+  // setDebugModulePort(moduleName: string, localPort: number) {
+  //   const debugModules = this._read();
+  //   debugModules[moduleName] = { port: localPort, html: false, server: false };
+  //   sessionStorage.setItem(this._storKey, JSON.stringify(debugModules));
+  // }
+  findDebugModuleByName(moduleName: string) {
+    return this.nameMap[moduleName];
   }
-  getDebugModulePort(moduleName: string) {
-    const debugModules = this._read();
-    return debugModules[moduleName];
+  findDebugModuleByPort(port: number) {
+    return this.portMap[port];
   }
 }
 
-export default new DebugSessionStorage('debugModules');
+export default new DebugSessionStorage();

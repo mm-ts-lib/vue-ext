@@ -19,7 +19,7 @@ function apiLoader(moduleName, api) {
             const response = await fetch(url, {
                 body: JSON.stringify(data),
                 cache: 'no-cache',
-                credentials: 'same-origin',
+                credentials: 'include',
                 headers: {
                     'content-type': 'application/json',
                 },
