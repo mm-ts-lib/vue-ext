@@ -1,5 +1,6 @@
 import V, { VueConstructor } from 'vue';
 import './extTimer';
+import './extTaskCmpt';
 export { store } from './globalStore';
 export { default as debugSessionStorage } from './DebugSessionStorage';
 export { serverAddress } from './serverAddress';

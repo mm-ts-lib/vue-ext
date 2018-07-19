@@ -11,6 +11,8 @@ _d('init vueExt...');
 const globalStore_1 = require("./globalStore");
 // 初始化定时器
 require("./extTimer");
+// 扩展任务组件属性
+require("./extTaskCmpt");
 // 导出全局store
 var globalStore_2 = require("./globalStore");
 exports.store = globalStore_2.store;
@@ -28,7 +30,7 @@ function extendVue(module, vueClass) {
     if (v.options && v.name) {
         globalStore_1.store.commit(`registerVueComponents`, {
             module,
-            vueClass,
+            vueClass
         });
     }
     return vueClass;

@@ -14,8 +14,8 @@ export declare class DebugSessionStorage {
         [k: string]: DebugModule_T;
     };
     constructor();
-    private _makeMap();
-    private _read();
+    private _makeMap;
+    private _read;
     findDebugModuleByName(moduleName: string): DebugModule_T;
     findDebugModuleByPort(port: number): DebugModule_T;
 }

@@ -1,23 +1,23 @@
 {
-  "name": "@tslib/vue-ext",
-  "version": "1.1.36",
-  "private": false,
-  "description": "config file loader for typescript",
-  "main": "dist/vueExt.js",
-  "types": "dist/vueExt.d.ts",
-  "repository": "https://github.com/mm-ts-lib/vue-ext.git",
-  "author": "zhufeng <zhfjyq@163.com>",
-  "license": "MIT",
-  "devDependencies": {},
-  "dependencies": {
-    "@types/debug": "^0.0.30",
-    "@types/lodash": "^4.14.108",
-    "debug": "^3.1.0",
-    "lodash": "^4.17.10",
-    "vue": "^2.5.16",
-    "vuex": "^3.0.1"
-  },
-  "scripts": {
-    "test": "ts-node ./test/test.ts"
-  }
+    "name": "@tslib/vue-ext",
+    "version": "1.1.37",
+    "private": false,
+    "description": "config file loader for typescript",
+    "main": "dist/vueExt.js",
+    "types": "dist/vueExt.d.ts",
+    "repository": "https://github.com/mm-ts-lib/vue-ext.git",
+    "author": "zhufeng <zhfjyq@163.com>",
+    "license": "MIT",
+    "devDependencies": {},
+    "dependencies": {
+        "@types/debug": "^0.0.30",
+        "@types/lodash": "^4.14.108",
+        "debug": "^3.1.0",
+        "lodash": "^4.17.10",
+        "vue": "^2.5.16",
+        "vuex": "^3.0.1"
+    },
+    "scripts": {
+        "test": "ts-node ./test/test.ts"
+    }
 }

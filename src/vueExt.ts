@@ -8,6 +8,8 @@ _d('init vueExt...');
 import { store } from './globalStore';
 // 初始化定时器
 import './extTimer';
+// 扩展任务组件属性
+import './extTaskCmpt';
 // 导出全局store
 export { store } from './globalStore';
 export { default as debugSessionStorage } from './DebugSessionStorage';
@@ -23,7 +25,7 @@ export function extendVue(module: string, vueClass: VueConstructor) {
   if (v.options && v.name) {
     store.commit(`registerVueComponents`, {
       module,
-      vueClass,
+      vueClass
     });
   }
   return vueClass;
