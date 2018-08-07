@@ -6,7 +6,9 @@ export declare type DebugModule_T = {
 };
 export declare class DebugSessionStorage {
     private _storKey;
-    debugModuleList: DebugModule_T[];
+    debugModuleList: {
+        [k: string]: DebugModule_T;
+    };
     portMap: {
         [k: number]: DebugModule_T;
     };

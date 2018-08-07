@@ -11,7 +11,7 @@ const _d = debug_1.default('app:apiLoader');
 function apiLoader(moduleName, api) {
     // 加载HttpApi
     for (const name of Object.keys(api)) {
-        console.log('load http api:', name);
+        console.log('load http api:1', name);
         const __api = api;
         // 设置 api post 函数
         __api[name] = async (data) => {
@@ -21,12 +21,12 @@ function apiLoader(moduleName, api) {
                 cache: 'no-cache',
                 credentials: 'include',
                 headers: {
-                    'content-type': 'application/json',
+                    'content-type': 'application/json'
                 },
                 method: 'POST',
                 mode: 'cors',
                 redirect: 'follow',
-                referrer: 'no-referrer',
+                referrer: 'no-referrer' // *client, no-referrer
             });
             if (response.ok) {
                 return await response.json();

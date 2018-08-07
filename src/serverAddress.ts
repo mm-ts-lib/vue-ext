@@ -7,7 +7,7 @@
 import _ from 'lodash';
 import debug from 'debug';
 import debugSessionStorage from './DebugSessionStorage';
-const _d = debug('@serverAddress');
+const _d = debug('app:serverAddress');
 
 function getDebugPort() {
   const m = location.pathname.match(/^\/(\d+)\//);
@@ -23,11 +23,13 @@ export function serverAddress(moduleName?: string) {
   if (location.hostname.match(/^debug\./)) {
     if (moduleName) {
       const debugModule = debugSessionStorage.findDebugModuleByName(moduleName);
+      console.log('=================debugModule', debugModule, moduleName);
       if (debugModule && debugModule.server) {
         // 调试模式，所有api请求发送到调试端口映射路径
         return `${location.protocol}//${location.hostname}:${location.port}/${debugModule.port}`;
       }
     }
+    // console.log('=================moduleName', moduleName, location.hostname);
     // 调试模式，无端口，所有api请求发送到调试域名服务器
     return `${location.protocol}//${location.hostname}:${location.port}`;
   }
