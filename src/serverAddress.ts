@@ -20,7 +20,7 @@ function getDebugPort() {
 export function serverAddress(moduleName?: string) {
   // 检测是否为调试组件
   // 检测是否为主页调试模式，即以一个域名是否使用debug
-  if (location.hostname.match(/^debug\./)) {
+  if (location.hostname.match(/^debug\./) || location.hostname.match(/^dev\./)) {
     if (moduleName) {
       const debugModule = debugSessionStorage.findDebugModuleByName(moduleName);
       console.log('=================debugModule', debugModule, moduleName);
